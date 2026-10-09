@@ -28,7 +28,8 @@ const float paddleSpeed = 400.f;
 const float paddleOffsetWall = 10.f;
 const float time_step = 0.017f; //60 fps
 
-int score = 0;
+int scoreL = 0;
+int scoreR = 0;
 
 sf::Vector2f ball_velocity;
 bool is_player1_serving = false;
@@ -60,7 +61,12 @@ void init() {
 }
 
 void reset() {
-    score++;
+    if (ball_velocity.x < 0) {
+        scoreR++;
+    }
+    else {
+        scoreL++;
+    }
     is_player1_serving = !is_player1_serving;
     ball_velocity = { (is_player1_serving ? initial_velocity_x : -initial_velocity_x), initial_velocity_y };
 
@@ -70,7 +76,7 @@ void reset() {
     ball.setPosition(gameWidth / 2.f, gameHeight / 2.f);
 
     // Update Score Text
-    text.setString(std::to_string(score));
+    text.setString((std::to_string(scoreL)) + ":" + (std::to_string(scoreR)));
     // Keep Score Text Centered
     text.setPosition((gameWidth * .5f) - (text.getLocalBounds().width * .5f), 0);
 }
@@ -181,9 +187,7 @@ void render(sf::RenderWindow& window) {
 }
 
 int main() {
-    if (!font.loadFromFile("Users\goodw\Downloads\Main\Comp_Sci_Bsc\Third_Year\games_engenieering\Pong\resources\BitcountSingle-Regular.ttf")) {
-        cout << "bruh";
-    }
+    font.loadFromFile("res/BitcountSingle-Regular.ttf");
     // Set text element to use font
     text.setFont(font);
     // set the character size to 24 pixels
